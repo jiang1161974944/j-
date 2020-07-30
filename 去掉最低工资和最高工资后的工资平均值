@@ -1,0 +1,21 @@
+double average(int* salary, int salarySize){
+    int temp;
+    for (int i = 0; i <salarySize ; ++i) {
+       for (int j = 0; j < salarySize-1-i; ++j) {
+           if (salary[j]>salary[j+1]){
+               temp=salary[j];
+               salary[j]=salary[j+1];
+               salary[j+1]=temp;
+           }
+       }
+   }
+
+
+    double averageSalary=0;//平均工资
+    double rest_sum=0;//去除两个极值后的总和
+        for(int k=1;k<salarySize-1;k++){
+            rest_sum+=salary[k];
+        }
+    averageSalary=rest_sum/(salarySize-2);
+    return averageSalary;
+}
