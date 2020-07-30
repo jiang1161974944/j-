@@ -1,0 +1,22 @@
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+bool* kidsWithCandies(int* candies, int candiesSize, int extraCandies, int* returnSize){
+    bool * p = (bool *)malloc(sizeof(bool) * candiesSize);
+    int max=* candies;
+    int i;
+    for(i=0;i<candiesSize;i++)
+    {
+        if(*(candies + i) >=max)
+            max = *(candies + i);
+    }
+    for(i=0;i<candiesSize;i++)
+    {
+        if(max - *(candies + i) <= extraCandies)
+            *(p+i) = true;
+        else
+            *(p+i) = false;
+    }
+    *returnSize = candiesSize;
+    return p;
+}
