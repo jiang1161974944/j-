@@ -1,0 +1,22 @@
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+int* smallerNumbersThanCurrent(int* nums, int numsSize, int* returnSize){
+    int*res = (int*)malloc(numsSize*sizeof(int*));
+    int i= 0;
+
+    for(int z=0;z<numsSize;z++)
+    {
+        for(int a=0;a<numsSize;a++)
+        {
+            if(nums[z]>nums[a])
+            {
+                i++;
+            }
+        }
+        res[z] = i;
+        i = 0;
+    }
+    *returnSize = numsSize;
+    return res;
+}
