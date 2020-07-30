@@ -1,0 +1,14 @@
+int findNumbers(int* nums, int numsSize){
+    int i,count=0,digit;
+    for(i=0;i<numsSize;i++){
+        if (nums[i]==0)
+            continue;
+        digit=0;
+        while(nums[i]!=0){
+            digit++;
+            nums[i]=nums[i]/10;
+        }
+        if(digit%2==0) count++;
+    }
+    return count;
+}
