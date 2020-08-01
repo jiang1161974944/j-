@@ -1,0 +1,19 @@
+**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+int* replaceElements(int* arr, int arrSize, int* returnSize){
+    *returnSize=arrSize;
+    int i,j,max=0;
+    for(i=0;i<arrSize-1;i++)
+    {
+        for(j=i+1;j<arrSize;j++)
+        {
+            if(max<arr[j])
+                max=arr[j];
+            arr[i]=max;
+        }
+        max=0;
+    }
+    arr[arrSize-1]=-1;
+    return arr;
+}
