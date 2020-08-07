@@ -1,0 +1,52 @@
+int thirdMax(int* nums, int numsSize){
+    int i,j,first,second,third,flag=0,temp=0;
+    if (numsSize==1)
+        return nums[0];
+    else if(numsSize==2)
+    {
+        if(nums[0]>nums[1])
+        {
+            return nums[0];
+        }
+        else
+            return nums[1];
+    }
+    for(i=0;i<numsSize-1;i++)
+    {
+        for(j=i+1;j<numsSize;j++)
+        {
+            if(nums[i]>nums[j])
+            {
+                temp=nums[i];
+                nums[i]=nums[j];
+                nums[j]=temp;
+            }
+        }
+    }
+    first=nums[numsSize-1];
+    for(i=numsSize-2;i>=0;i--)
+    {
+        if(nums[i]<first)
+        {
+            second=nums[i];
+            flag=i;
+            break;
+        }
+    }
+    if(flag!=0)
+    {
+        for(i=flag-1;i>=0;i--)
+        {
+            if(nums[i]<second)
+            {
+                third=nums[i];
+                temp=1;
+                break;
+            }
+        }
+    }
+    if(temp==1)
+        return third;
+    else
+        return first;
+}
