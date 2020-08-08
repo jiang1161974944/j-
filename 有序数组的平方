@@ -1,0 +1,25 @@
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+int* sortedSquares(int* A, int ASize, int* returnSize){
+    int* res=malloc(ASize*sizeof(int));
+    *returnSize=ASize;
+    int i,j,temp;
+    for(i=0;i<ASize;i++)
+    {
+        res[i]=A[i]*A[i];
+    }
+    for(i=0;i<ASize;i++)
+    {
+        for(j=i+1;j<ASize;j++)
+        {
+            if(res[i]>res[j])
+            {
+                temp=res[i];
+                res[i]=res[j];
+                res[j]=temp;
+            }
+        }
+    }
+    return res;
+}
