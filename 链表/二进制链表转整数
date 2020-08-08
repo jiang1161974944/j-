@@ -1,0 +1,18 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
+
+
+int getDecimalValue(struct ListNode* head){
+    struct ListNode *a=head;
+    int num=0;
+    while(a!=NULL){
+        num=num*2+a->val;
+        a=a->next;
+    }
+    return num;
+}
