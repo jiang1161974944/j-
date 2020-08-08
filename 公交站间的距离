@@ -1,0 +1,21 @@
+int distanceBetweenBusStops(int* distance, int distanceSize, int start, int destination){
+    int i,min=0,temp,sum=0;
+    if(start>destination)
+    {
+        temp=start;
+        start=destination;
+        destination=temp;
+    }
+    for(i=start;i<destination;i++)
+    {
+        min+=distance[i];
+    }
+    for(i=0;i<distanceSize;i++)
+    {
+        sum+=distance[i];
+    }
+    temp=sum-min;
+    if(temp<min)
+        min=temp;
+    return min;
+}
