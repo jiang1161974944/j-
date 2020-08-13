@@ -1,0 +1,33 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
+
+
+struct ListNode* removeElements(struct ListNode* head, int val){
+    //哨兵节点,置于链表头之前
+    struct ListNode *swap = malloc(sizeof(struct ListNode));
+    swap->next = head;
+
+    struct ListNode *curr = head, *prev = swap;
+    while (curr != NULL)
+    { //当前值不为空
+
+        if (curr->val == val)
+        {
+            prev->next = curr->next; //删除当前节点
+        }
+        else
+        {
+            prev = curr;  //否则，向后继续判断，当前节点变成前一个节点
+        }
+        curr = curr->next; //下一个节点移到当前节点，继续判断
+    }
+    head = swap->next;
+    free(swap);  //判断完毕，释放哨兵节点
+
+    return head;
+}
