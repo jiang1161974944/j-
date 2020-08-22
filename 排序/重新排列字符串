@@ -1,0 +1,10 @@
+char * restoreString(char * s, int* indices, int indicesSize){
+    char *ans;//声明
+    ans=malloc(sizeof(char)*(indicesSize+1));//动态分配空间，多一个用于存储字符串结尾
+    int i=0;
+    for(i=0;i<indicesSize;i++){//一次循环把字符放在正确的位置上
+        ans[indices[i]]=s[i];
+    }
+    ans[indicesSize]='\0';//添加字符串结尾
+    return ans;
+}
