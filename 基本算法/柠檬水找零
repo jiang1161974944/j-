@@ -1,0 +1,39 @@
+bool lemonadeChange(int* bills, int billsSize){
+    int five = 0;
+    int ten = 0;
+    int tewnty = 0;
+    int i;
+    for(i=0; i<billsSize; i++)
+    {
+        if(bills[i]==5)
+        {
+            five++;
+        }
+        else if(bills[i]==10)
+        {
+            ten++;
+            five--;
+        }
+        else
+        {
+            tewnty++;
+            if(ten == 0)
+            {
+                five--;
+                five--;
+            }
+            else
+            {
+                ten--;
+            }
+            five--;
+        }
+        // 这里代表钱的数目,如果钱的数目是负数,说明已经不能找零了,所以返回false
+        if(five < 0 || ten < 0)
+        {
+            return false;
+        }
+    }
+    // 没有出现无法找零的情况,所以返回true
+    return true;
+}
