@@ -1,0 +1,16 @@
+char firstUniqChar(char* s){
+    int cnt[256]={0};  
+    int i=0;
+    while(s[i]!='\0'){       //字符出现的次数
+        cnt[s[i]]++;
+        i++;
+    }
+    i=0;
+    while(s[i]!='\0'){       //找第一个只出现一次的字符
+        if(cnt[s[i]]==1){    //次数为1
+            return s[i];    
+        }
+        i++;
+    }
+    return ' ';
+}
