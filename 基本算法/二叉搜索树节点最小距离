@@ -1,0 +1,33 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+#define ARRCNT 100
+int idx = 0;
+void myFunc(struct TreeNode *root, int *arr)
+{
+    if (root == NULL) {
+        return;
+    }
+
+    myFunc(root->left, arr);
+    arr[idx++] = root->val;
+    myFunc(root->right, arr);
+}
+
+int minDiffInBST(struct TreeNode* root){
+    int arr[ARRCNT] = {0};
+    int i, res;
+
+    idx = 0;
+    res = INT_MAX;
+    myFunc(root, arr);
+    for (i = 1; i < idx; i++) {
+        res = arr[i] - arr[i - 1] < res ? arr[i] - arr[i - 1] : res;
+    }
+    return res;
+}
