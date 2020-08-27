@@ -1,0 +1,25 @@
+bool divisorGame(int N){
+    int num;
+    int dp[10000];
+    int i, j;
+
+        dp[1] = 0;
+        dp[2] = 1;
+        for(i= 3; i <= N; i++)
+        {
+            dp[i] = 0;
+            for(j = 1; j < i; j++)
+            {
+                if((i % j) == 0)
+                {
+                    dp[i] = 1 - dp[i-j];
+                    if(dp[i] == 1)
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+
+        return dp[N];
+}
