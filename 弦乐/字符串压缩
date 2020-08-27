@@ -1,0 +1,22 @@
+char* compressString(char* S){
+    char* str;
+    int i,len,p=0,count=1;
+    len = strlen(S);
+    if(len<=2)
+        return S;
+    str = (char*)malloc((2*len+2)*sizeof(char));
+    for(i=1; i<len+1; i++){
+        if(S[i] == S[i-1]){
+            count++;
+        }else{
+            str[p++] = S[i-1];
+            int wlen = sprintf(&str[p],"%d",count);
+            p += wlen;
+            count = 1;
+        }
+    }
+    str[p] = '\0';
+    if(strlen(str)>=len)
+        return S;
+    return str;
+}
