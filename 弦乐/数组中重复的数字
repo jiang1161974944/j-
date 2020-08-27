@@ -1,0 +1,18 @@
+int findRepeatNumber(int* nums, int numsSize){
+    int i = 0;
+    char *tmp = calloc(numsSize, sizeof(int));
+
+    for (i = 0; i < numsSize; i++)
+    {
+        if (0 == tmp[nums[i]])
+        {
+            tmp[nums[i]] = 1;
+        }
+        else
+        {
+            return nums[i];
+        }
+    }
+
+    return -1;
+}
