@@ -1,0 +1,16 @@
+int lastStoneWeight(int* stones, int stonesSize){
+    if(stonesSize==1) return stones[0];
+    short i,j,tmp;
+    for(i=0;i<stonesSize;i++)
+        for(j=i+1;j<stonesSize;j++)
+            if(stones[j]>stones[i]){
+                tmp=stones[j];
+                stones[j]=stones[i];
+                stones[i]=tmp;
+            }
+    if(stones[1]==0) return 0;
+    stones[0]=stones[0]-stones[1];
+    stones[1]=0;
+    lastStoneWeight(stones,stonesSize);
+    return stones[0];
+}
