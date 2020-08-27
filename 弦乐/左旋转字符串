@@ -1,0 +1,23 @@
+char* reverseLeftWords(char* s, int n){
+    char *arry;
+    int sum ,m1,m ,i=0 ,j;
+    sum=strlen(s);
+    j=sum-1;
+    arry=malloc(sizeof(int)*(sum+1));
+    arry[sum]='\0';
+     m=n-1;  //向前的指针；
+     m1=n;  //向后的指针;
+    while(m1<sum || 0<=m ){
+           if(0<=m){
+                 arry[j]=s[m];
+                 j--;
+                 m--;
+           }
+           if(m1<sum){
+                 arry[i]=s[m1];
+                 i++;
+                 m1++;
+           }
+    }
+  return arry;
+}
