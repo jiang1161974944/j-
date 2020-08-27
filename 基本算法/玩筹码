@@ -1,0 +1,15 @@
+int minCostToMoveChips(int* chips, int chipsSize){
+    int one =0, two = 0;
+    for(int i = 0; i < chipsSize; i++)
+    {
+        if(chips[i]%2)
+        {
+            two++;
+        }
+        else
+        {
+            one++;
+        }
+    }
+    return (one <= two)? one: two;
+}
