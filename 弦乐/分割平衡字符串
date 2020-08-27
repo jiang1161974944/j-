@@ -1,0 +1,15 @@
+int balancedStringSplit(char * s){
+    int numl = 0, numr = 0;
+    int count = 0;
+    while(*s != NULL){
+        if(*s == 'L')  numl++;
+        if(*s == 'R')  numr++;
+        if(numl == numr){
+            count++;
+            numl = 0;
+            numr = 0;
+        }
+        s++;
+    }
+    return count;
+}
