@@ -1,0 +1,16 @@
+int minTimeToVisitAllPoints(int** points, int pointsSize, int* pointsColSize){
+    int i, time=0, x_d, y_d;
+
+    for(i=1;i<pointsSize;i++)
+    {
+        x_d = abs(points[i][0] - points[i-1][0]);  // 两点x坐标之差
+        y_d = abs(points[i][1] - points[i-1][1]);  // 两点y坐标之差
+
+        // 最短距离是两点的x和y坐标之差的较大者
+        if(x_d < y_d)
+            time += y_d;
+        else
+            time += x_d;
+    }
+    return time;
+}
