@@ -1,0 +1,38 @@
+bool checkOverlap(int radius, int x_center, int y_center, int x1, int y1, int x2, int y2){
+    if(x_center<x1-radius||x_center>x2+radius){        //处理 左 右边
+        return false;
+    }
+    if(y_center<y1-radius||y_center>y2+radius){        //处理 上 下边
+        return false;
+    }
+    int dx,dy,l;
+    if(x_center<=x1&&y_center>=y2){             //处理左上角
+        dx=x1-x_center;dy=y_center-y2;
+        l=dx*dx+dy*dy;
+        if(l>radius*radius){
+            return false;
+        }
+    }
+    if(x_center<=x1&&y_center<=y1){             //处理左下角
+        dx=x1-x_center;dy=y1-y_center;
+        l=dx*dx+dy*dy;
+        if(l>radius*radius){
+            return false;
+        }
+    }
+    if(x_center>=x2&&y_center>=y2){             //处理右上角
+        dx=x_center-x2;dy=y_center-y2;
+        l=dx*dx+dy*dy;
+        if(l>radius*radius){
+            return false;
+        }
+    }
+    if(x_center>=x2&&y_center<=y1){             //处理右下角
+        dx=x_center-x2;dy=y1-y_center;
+        l=dx*dx+dy*dy;
+        if(l>radius*radius){
+            return false;
+        }
+    }
+    return true;
+}
