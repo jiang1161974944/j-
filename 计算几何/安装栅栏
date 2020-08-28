@@ -1,0 +1,48 @@
+import math
+class Solution:
+    def outerTrees(self, points: List[List[int]]) -> List[List[int]]:
+        def angle(start, end):
+            #print('angle:', start, end)
+            if end[0] == start[0]:
+                ans = math.pi / 2
+            else:
+                ans = math.atan((end[1]-start[1]) / (end[0]-start[0]))
+            if ans < 0:
+                ans = math.pi + ans
+            return ans
+
+        def check(pre, cur, point):
+            ans = 0
+            ans = pre[0]*cur[1] + pre[1]*point[0] + cur[0]*point[1]
+            ans -= pre[0]*point[1] + pre[1]*cur[0] + cur[1]*point[0]
+            return ans
+
+        if len(points) < 3:
+            return points
+
+        stack = []
+        points.sort(key=lambda x: (x[1], x[0]))
+        stack.append(points[0])
+        points.pop(0)
+        #print(stack)
+        #print(points)
+        #print(points[0])
+        points.sort(key=lambda x: angle(stack[0], x))
+        stack.append(points[0])
+
+        i = 1
+        while i < len(points):
+            cur = stack.pop()
+            pre = stack[-1]
+            if check(pre, cur, points[i]) >= 0:
+                stack.append(cur)
+                stack.append(points[i])
+                i += 1
+        
+        for i in range(len(points)-1):
+            if points[i] in stack:
+                continue
+            if check(stack[0], points[len(points)-1], points[i]) == 0:
+                stack.append(points[i])
+
+        return stack
