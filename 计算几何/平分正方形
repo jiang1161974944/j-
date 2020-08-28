@@ -1,0 +1,54 @@
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+//
+#define X1 (square1[0])
+#define Y1 (square1[1])
+#define C1X (square1[0] + square1[2] / 2.0 )
+#define C1Y (square1[1] + square1[2] / 2.0 )
+#define X2 (square2[0])
+#define Y2 (square2[1])
+#define C2X (square2[0] + square2[2] / 2.0 )
+#define C2Y (square2[1] + square2[2] / 2.0 )
+
+double* cutSquares(int* square1, int square1Size, int* square2, int square2Size, int* returnSize)
+{
+    double *answer;
+    double gradient;
+    answer = (double*)malloc( 4 * sizeof(double));
+    if( C1X == C2X ) 
+    { /* 中心点的纵坐标相同 */
+        answer[0] = C1X;
+        answer[1] = fmin(Y1,Y2);
+        answer[2] = C2X;
+        answer[3] = fmax(Y1 + square1[2],Y2 + square2[2]);
+    }
+    else
+    { /* 中心点的纵坐标不同 */
+        gradient = (C2Y - C1Y) / (C2X - C1X);
+        printf("gradient = %f",gradient);
+        if ( gradient >= 1.0 )
+        { /* 斜率大于1，交点在上下两边，纵坐标最小的点在左边 */
+            answer[1] = fmin(Y1,Y2);
+            answer[0] = (answer[1] - C1Y) / gradient + C1X;
+            answer[3] = fmax(Y1 + square1[2],Y2 + square2[2]);
+            answer[2] = (answer[3] - C1Y) / gradient + C1X;
+        }
+        else if ( gradient <= -1.0 )
+        { /* 斜率小于-1，交点在上下两边，纵坐标最小的点在右边 */
+            answer[1] = fmax(Y1 + square1[2],Y2 + square2[2]);
+            answer[0] = (answer[1] - C1Y) / gradient + C1X;
+            answer[3] = fmin(Y1,Y2);
+            answer[2] = (answer[3] - C1Y) / gradient + C1X;
+        }
+        else
+        { /* 斜率在-1到1之间，交点在左右两边 */
+            answer[0] = fmin(X1,X2);
+            answer[1] = (answer[0] - C1X) * gradient + C1Y;
+            answer[2] = fmax(X1 + square1[2],X2 + square2[2]);
+            answer[3] = (answer[2] - C1X) * gradient + C1Y;
+        }
+    }
+    *returnSize = 4;
+    return answer;
+}
