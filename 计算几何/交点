@@ -1,0 +1,98 @@
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+double* intersection(int* start1, int start1Size, int* end1, int end1Size, int*      start2, int start2Size, int* end2, int end2Size, int* returnSize)
+{
+    int x1 = start1[0], y1 = start1[1], x2 = end1[0], y2 = end1[1];
+    int x3 = start2[0], y3 = start2[1], x4 = end2[0], y4 = end2[1];
+    double x, y;
+    double *result = malloc(2 * sizeof(double));
+    if (result == NULL) {
+        *returnSize = 0;
+        return NULL;
+    }
+    // 线段一方程的一般式: (y - y1)(x2 - x1) = (y2 - y1)(x - x1)
+    // 线段二方程的一般式: (y - y3)(x4 - x3) = (y4 - y3)(x - x3)
+    if ((y2 - y1) * (x4 - x3) != (x2 - x1) * (y4 - y3)) {
+        // 线段不平行的情况
+        /*
+          解得 x = [(y3 - y1)(x2 - x1)(x4 - x3) + x1(y2 - y1)(x4 - x3) 
+          - x3(y4 - y3)(x2 - x1)] / [(y2 - y1)(x4 - x3) - (y4 - y3)(x2 - x1)]
+          解得 y = [(x3 - x1)(y2 - y1)(y4 - y3) + y1(x2 - x1)(y4 - y3) 
+          - y3(x4 - x3)(y2 - y1)] / [(x2 - x1)(y4 - y3) - (x4 - x3)(y2 - y1)]
+        */
+        
+        x = (double)((y3 - y1) * (x2 - x1) * (x4 - x3) + x1 * (y2 - y1) * (x4 - x3)
+            - x3 * (y4 - y3) * (x2 - x1))
+            / ((y2 - y1) * (x4 - x3) - (y4 - y3) * (x2 - x1));
+        y = (double)((x3 - x1) * (y2 - y1) * (y4 - y3) + y1 * (x2 - x1) * (y4 - y3)
+            - y3 * (x4 - x3) * (y2 - y1))
+            / ((x2 - x1) * (y4 - y3) - (x4 - x3) * (y2 - y1));
+
+        // 判断直线交点是否同时在两线段上
+        if ((((x >= x1 && x <= x2) || (x >= x2 && x <= x1)) 
+                && ((y >= y1 && y <= y2) || (y >= y2 && y <= y1)))
+                && (((x >= x3 && x <= x4) || (x >= x4 && x <= x3))
+                && ((y >= y3 && y <= y4) || (y >= y4 && y <= y3)))) {
+            
+            result[0] = (x <= 0 && x > -1e-6) ? x + 1e-6 : x;
+            result[1] = (y <= 0 && y > -1e-6) ? y + 1e-6 : y;
+            *returnSize = 2;
+        } else {
+            *returnSize = 0;
+        }
+        
+    } else {
+        // 线段平行情况
+        /* 
+          先判断是否为同一条直线，只需判断一条直线上的点是否在另一条直线上
+          把 (x3, y3) 带入线段一的方程一般式中
+        */
+        if ((y3 - y1) * (x2 - x1) == (y2 - y1) * (x3 - x1)) {
+            // 如果是同一条直线，考虑线段相交部分，
+            /* 
+              只需分别找更小的那个点，看在不在另一条线段上，如果在就说明这个点就是答案，
+            */
+            int xa, ya, xb, yb;
+            if (x1 < x2 || (x1 == x2 && y1 < y2)) {
+                xa = x1;
+                ya = y1;
+            } else {
+                xa = x2;
+                ya = y2;
+            }
+
+            if (x3 < x4 || (x3 == x4 && y3 < y4)) {
+                xb = x3;
+                yb = y3;
+            } else {
+                xb = x4;
+                yb = y4;
+            }
+            
+            if(((xa >= x3 && xa <= x4) || (xa >= x4 && xa <= x3))
+                    && ((ya >= y3 && ya <= y4) || (ya >= y4 && ya <= y3))) {
+                x = xa;
+                y = ya;
+                result[0] = (x <= 0 && x > -1e-6) ? x + 1e-6 : x;
+                result[1] = (y <= 0 && y > -1e-6) ? y + 1e-6 : y;
+                *returnSize = 2;
+            } else if (((xb >= x1 && xb <= x2) || (xb >= x2 && xb <= x1))
+                    && ((yb >= y1 && yb <= y2) || (yb >= y2 && yb <= y1))) {
+                x = xb;
+                y = yb;
+                result[0] = (x <= 0 && x > -1e-6) ? x + 1e-6 : x;
+                result[1] = (y <= 0 && y > -1e-6) ? y + 1e-6 : y;
+                *returnSize = 2;
+            } else {
+                // 两直线重合，但是线段无交点
+                *returnSize = 0;
+            }
+            
+        } else {
+            // 如果不是同一条直线，说明没交点
+            *returnSize = 0;
+        }
+    }
+    return result;
+}
