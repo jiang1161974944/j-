@@ -1,0 +1,806 @@
+import pymssql
+import random
+import tkinter 
+import operator
+from tkinter import *
+from tkinter import ttk
+
+
+def inquire():
+	tkinter.Label(window,bg='WhiteSmoke').place(x=100,y=0,width=350,height=400,anchor='nw')
+	global L11,L12,L13,L14,L15,E11,E12,E13,E14,E15,Btn11,Btn12,Btn13,Btn14,Btn15
+	global bname_inquire,bno_inquire,bprice_inquire,bpress_inquire,byear_inquire
+	#按编号查询
+	L11=Label(window,text='编号:')
+	L11.place(x=150,y=10,width=50,anchor=NW)
+
+	bno_inquire=StringVar()
+	E11=Entry(window,bd=1,textvariable=bno_inquire)
+	E11.place(x=210,y=10,width=80,anchor=NW)
+
+	Btn11=tkinter.Button(window,text='确定查询',command=no_inquire)
+	Btn11.place(x=300,y=5,width=50,anchor=NW)
+
+
+	#按书名查询
+	L12=Label(window,text='书名:')
+	L12.place(x=150,y=50,width=50,anchor=NW)
+
+	bname_inquire=StringVar()
+	E12=Entry(window,bd=1,textvariable=bname_inquire)
+	E12.place(x=210,y=50,width=80,anchor=NW)
+
+	Btn12=tkinter.Button(window,text='确定查询',command=name_inquire)
+	Btn12.place(x=300,y=45,width=50,anchor=NW)
+
+
+	#按价格查询
+	L13=Label(window,text='作者:')
+	L13.place(x=150,y=90,width=50,anchor=NW)
+
+	bprice_inquire=StringVar()
+	E13=Entry(window,bd=1,textvariable=bprice_inquire)
+	E13.place(x=210,y=90,width=80,anchor=NW)
+
+	Btn13=tkinter.Button(window,text='确定查询',command=price_inquire)
+	Btn13.place(x=300,y=85,width=50,anchor=NW)
+
+
+	#按出版社查询
+	L14=Label(window,text='出版社:')
+	L14.place(x=150,y=130,width=50,anchor=NW)
+
+	bpress_inquire=StringVar()
+	E14=Entry(window,bd=1,textvariable=bpress_inquire)
+	E14.place(x=210,y=130,width=80,anchor=NW)
+
+	Btn14=tkinter.Button(window,text='确定查询',command=press_inquire)
+	Btn14.place(x=300,y=125,width=50,anchor=NW)
+
+
+	#按年份查询
+	L15=Label(window,text='数量:')
+	L15.place(x=150,y=170,width=50,anchor=NW)
+
+	byear_inquire=StringVar()
+	E15=Entry(window,bd=1,textvariable=byear_inquire)
+	E15.place(x=210,y=170,width=80,anchor=NW)
+
+	Btn15=tkinter.Button(window,text='确定查询',command=year_inquire)
+	Btn15.place(x=300,y=165,width=50,anchor=NW)
+	
+	
+	
+def name_inquire():
+	tmpbname_inquire=bname_inquire.get().strip() #获取书名
+	sql=''
+	if len(tmpbname_inquire)==0:
+		sql='select * from book'
+	else:
+		sql="select * from book where bname like "+"'%"+tmpbname_inquire+"%'"   #根据书名查询
+	cursor.execute(sql)
+	list=cursor.fetchall()
+	lists=[]
+	for row in list:
+		if(row[1]!=None):
+			r1=row[1].encode('latin-1').decode('gbk')
+		else:
+			r1=row[1]
+		if(row[3]!=None):
+			r3=row[3].encode('latin-1').decode('gbk')
+		else:
+			r3=row[3]
+		r0=row[0]
+		r2=row[2]
+		r4=row[4]
+		lists.append({"编号":r0,"书名":r1,"价格":r2,"出版社":r3,"出版年":r4})
+	print('已自动清空页面')
+	tkinter.Label(window,bg='WhiteSmoke').place(x=100,y=0,width=350,height=400,anchor='nw')
+	if len(tmpbname_inquire)==0:
+		show()
+		
+	else:
+		x=tree.get_children()
+	
+		#清空原有数据
+		for item in x:
+			tree.delete(item)
+	
+		#显示符合要求的数据
+		t=0
+		lists1 = sorted(lists, key=operator.itemgetter("编号"))
+		for v in lists1:
+			tree.insert('', t, values = (v.get("编号"), v.get("书名"), v.get("价格"),v.get("出版社"),v.get("出版年")))
+			t+=1
+		
+
+def no_inquire():
+	tmpbno_inquire=bno_inquire.get().strip() #获取编号
+	sql=''
+	if len(tmpbno_inquire)==0:
+		sql='select * from book'
+	else:
+		sql="select * from book where bno like "+"'%"+tmpbno_inquire+"%'"   #根据编号查询
+	cursor.execute(sql)
+	list=cursor.fetchall()
+	lists=[]
+	for row in list:
+		if(row[1]!=None):
+			r1=row[1].encode('latin-1').decode('gbk')
+		else:
+			r1=row[1]
+		if(row[3]!=None):
+			r3=row[3].encode('latin-1').decode('gbk')
+		else:
+			r3=row[3]
+		r0=row[0]
+		r2=row[2]
+		r4=row[4]
+		lists.append({"编号":r0,"书名":r1,"价格":r2,"出版社":r3,"出版年":r4})
+	print('已自动清空页面')
+	tkinter.Label(window,bg='WhiteSmoke').place(x=100,y=0,width=350,height=400,anchor='nw')
+	if len(tmpbno_inquire)==0:
+		show()
+		
+	else:
+		x=tree.get_children()
+	
+		#清空原有数据
+		for item in x:
+			tree.delete(item)
+	
+		#显示符合要求的数据
+		t=0
+		lists1 = sorted(lists, key=operator.itemgetter("编号"))
+		for v in lists1:
+			tree.insert('', t, values = (v.get("编号"), v.get("书名"), v.get("作者"),v.get("出版社"),v.get("数量")))
+			t+=1
+			
+
+def price_inquire():
+	tmpbprice_inquire=bprice_inquire.get().strip() 
+	sql=''
+	if len(tmpbprice_inquire)==0:
+		sql='select * from book'
+	else:
+		sql="select * from book where bwriter like "+"'%"+tmpbprice_inquire+"%'"   
+	cursor.execute(sql)
+	list=cursor.fetchall()
+	lists=[]
+	for row in list:
+		if(row[1]!=None):
+			r1=row[1].encode('latin-1').decode('gbk')
+		else:
+			r1=row[1]
+		if(row[3]!=None):
+			r3=row[3].encode('latin-1').decode('gbk')
+		else:
+			r3=row[3]
+		r0=row[0]
+		r2=row[2]
+		r4=row[4]
+		lists.append({"编号":r0,"书名":r1,"作者":r2,"出版社":r3,"数量":r4})
+	print('已自动清空页面')
+	tkinter.Label(window,bg='WhiteSmoke').place(x=100,y=0,width=350,height=400,anchor='nw')
+	if len(tmpbprice_inquire)==0:
+		show()
+		
+	else:
+		x=tree.get_children()
+	
+		#清空原有数据
+		for item in x:
+			tree.delete(item)
+	
+		#显示符合要求的数据
+		t=0
+		lists1 = sorted(lists, key=operator.itemgetter("编号"))
+		for v in lists1:
+			tree.insert('', t, values = (v.get("编号"), v.get("书名"), v.get("作者"),v.get("出版社"),v.get("数量")))
+			t+=1
+	
+def press_inquire():
+	tmpbpress_inquire=bpress_inquire.get().strip() 
+	sql=''
+	if len(tmpbpress_inquire)==0:
+		sql='select * from book'
+	else:
+		sql="select * from book where bpress like "+"'%"+tmpbpress_inquire+"%'"   
+	cursor.execute(sql)
+	list=cursor.fetchall()
+	lists=[]
+	for row in list:
+		if(row[1]!=None):
+			r1=row[1].encode('latin-1').decode('gbk')
+		else:
+			r1=row[1]
+		if(row[3]!=None):
+			r3=row[3].encode('latin-1').decode('gbk')
+		else:
+			r3=row[3]
+		r0=row[0]
+		r2=row[2]
+		r4=row[4]
+		lists.append({"编号":r0,"书名":r1,"作者":r2,"出版社":r3,"数量":r4})
+	print('已自动清空页面')
+	tkinter.Label(window,bg='WhiteSmoke').place(x=100,y=0,width=350,height=400,anchor='nw')
+	if len(tmpbpress_inquire)==0:
+		show()
+		
+	else:
+		x=tree.get_children()
+	
+		#清空原有数据
+		for item in x:
+			tree.delete(item)
+	
+		#显示符合要求的数据
+		t=0
+		lists1 = sorted(lists, key=operator.itemgetter("编号"))
+		for v in lists1:
+			tree.insert('', t, values = (v.get("编号"), v.get("书名"), v.get("作者"),v.get("出版社"),v.get("数量")))
+			t+=1
+		
+		
+def year_inquire():
+	cursor=conn.cursor()
+	tmpbyear_inquire=byear_inquire.get().strip() 
+	sql=''
+	if len(tmpbyear_inquire)==0:
+		sql='select * from book'
+	else:
+		sql="select * from book where bnum like "+"'%"+tmpbyear_inquire+"%'"  
+	cursor.execute(sql)
+	list=cursor.fetchall()
+	lists=[]
+	for row in list:
+		if(row[1]!=None):
+			r1=row[1].encode('latin-1').decode('gbk')
+		else:
+			r1=row[1]
+		if(row[3]!=None):
+			r3=row[3].encode('latin-1').decode('gbk')
+		else:
+			r3=row[3]
+		r0=row[0]
+		r2=row[2]
+		r4=row[4]
+		lists.append({"编号":r0,"书名":r1,"作者":r2,"出版社":r3,"数量":r4})
+	print('已自动清空页面')
+	tkinter.Label(window,bg='WhiteSmoke').place(x=100,y=0,width=350,height=400,anchor='nw')
+	if len(tmpbyear_inquire)==0:
+		show()
+		
+	else:
+		x=tree.get_children()
+	
+		#清空原有数据
+		for item in x:
+			tree.delete(item)
+	
+		#显示符合要求的数据
+		t=0
+		lists1 = sorted(lists, key=operator.itemgetter("编号"))
+		for v in lists1:
+			tree.insert('', t, values = (v.get("编号"), v.get("书名"), v.get("作者"),v.get("出版社"),v.get("数量")))
+			t+=1
+
+
+def delete1():
+	tkinter.Label(window,bg='WhiteSmoke').place(x=100,y=0,width=350,height=400,anchor='nw')
+	global bno_delete,L2,E2,Btn2
+	L2=Label(window,text='编号')
+	L2.place(x=150,y=90,width=50,anchor=NW)
+	
+	bno_delete=StringVar()
+	E2=Entry(window, bd=1, textvariable=bno_delete)
+	E2.place(x=210,y=90,width=80,anchor=NW)
+
+	Btn2=tkinter.Button(window,text='确定删除',command=no_delete)
+	Btn2.place(x=300,y=85,width=50,anchor=NW)
+	
+def no_delete():
+	tmpbno_delete=bno_delete.get().strip() 
+	sql=''
+	if len(tmpbno_delete)==0:
+		sql=''
+		print('未输入元素！请重新输入或选择其他功能')
+	else:
+		sql="select * from book where bno = "+"'"+tmpbno_delete+"'"
+		cursor.execute(sql)
+		list=cursor.fetchall()
+		if(list):
+			print('删除成功')
+			print('已自动清空页面')
+			tkinter.Label(window,bg='WhiteSmoke').place(x=100,y=0,width=350,height=400,anchor='nw')
+		else:
+			print('此书不存在！请重新输入或选择其他功能')
+		sql00=" delete from book where bno = "+"'"+tmpbno_delete+"'"
+		sql02=" delete from buyer where bid in (select bid from book_order where bno = "+"'"+tmpbno_delete+"'"+")"
+		sql03=" delete from book_order where bno ="+"'"+tmpbno_delete+"'"   
+		sql=sql00+sql02+sql03
+	cursor.execute(sql)
+	conn.commit()
+	show()
+
+	
+	
+	
+def change1():
+	tkinter.Label(window,bg='WhiteSmoke').place(x=100,y=0,width=350,height=400,anchor='nw')
+	global bno_change,L3,E3,Btn3
+	L3=Label(window,text='编号')
+	L3.place(x=150,y=90,width=50,anchor=NW)
+	
+	bno_change=StringVar()
+	E3=Entry(window, bd=1, textvariable=bno_change)
+	E3.place(x=210,y=90,width=80,anchor=NW)
+
+	Btn3=tkinter.Button(window,text='确定修改',command=no_change)
+	Btn3.place(x=300,y=85,width=50,anchor=NW)
+
+
+def no_change():
+	global tmpbno_change
+	tmpbno_change=bno_change.get().strip() 
+	sql=''
+	if len(tmpbno_change)==0:
+		sql=''
+		print('未输入编号！请重新输入或选择其他功能')
+	else:
+		sql="select * from book where bno = " + "'"+tmpbno_change+"'"
+		cursor.execute(sql)
+		list=cursor.fetchall()
+		if(list):
+			global L41,L42,L43,L44,L45,E41,E42,E43,E44,E45,Btn41
+			global bno_change1
+			bno_change1=StringVar()
+			L41=Label(window,text='新编号')
+			L41.place(x=150,y=130,width=50,anchor=NW)
+			E41=Entry(window, bd=1, textvariable=bno_change1)
+			E41.place(x=210,y=130,width=80,anchor=NW)
+
+			global bname_change
+			bname_change=StringVar()
+			L42=Label(window,text='新书名')
+			L42.place(x=150,y=180,width=50,anchor=NW)
+			E42=Entry(window, bd=1, textvariable=bname_change)
+			E42.place(x=210,y=180,width=80,anchor=NW)
+
+			global bprice_change
+			bprice_change=StringVar()
+			L43=Label(window,text='新作者')
+			L43.place(x=150,y=230,width=50,anchor=NW)
+			E43=Entry(window, bd=1, textvariable=bprice_change)
+			E43.place(x=210,y=230,width=80,anchor=NW)
+
+			global bpress_change
+			bpress_change=StringVar()
+			L44=Label(window,text='新出版社')
+			L44.place(x=150,y=280,width=50,anchor=NW)
+			E44=Entry(window, bd=1, textvariable=bpress_change)
+			E44.place(x=210,y=280,width=80,anchor=NW)
+
+			global byear_change
+			byear_change=StringVar()
+			L45=Label(window,text='新数量')
+			L45.place(x=150,y=330,width=50,anchor=NW)
+			E45=Entry(window, bd=1, textvariable=byear_change)
+			E45.place(x=210,y=330,width=80,anchor=NW)
+
+
+			Btn41=tkinter.Button(window,text='确定',command=no_change_in)
+			Btn41.place(x=300,y=325,width=50,anchor=NW)
+			
+		else:
+			print('此书不存在！请重新输入或选择其他功能')
+
+
+	cursor.execute(sql)
+	conn.commit()
+
+
+def no_change_in():
+	sql=''
+	sql1=''
+	sql2=''
+	sql3=''
+	sql4=''
+	sql5=''
+	tmpbno_change1=bno_change1.get().strip()
+	tmpbname_change=bname_change.get().strip()
+	tmpbprice_change=bprice_change.get().strip()
+	tmpbpress_change=bpress_change.get().strip()
+	tmpbyear_change=byear_change.get().strip()
+	
+	flag=0
+	#判断修改后的编号是否会重复
+	if(tmpbno_change1):
+		sql="select * from book where bno = " +"'"+tmpbno_change1+"'"
+		cursor.execute(sql)
+		list=cursor.fetchall()
+		if(list and tmpbno_change!=tmpbno_change1):
+			print('此编号已存在！请重新输入或选择其他功能')
+			flag=1
+		else:
+			sql01=" update book_order set bno= "+"'"+tmpbno_change1+"'"+"where bno ="+"'"+tmpbno_change+"'"
+			cursor.execute(sql01)
+	sql=''
+	
+	
+	if(tmpbname_change):
+		sql1= "update book set bname = "+"'"+tmpbname_change +"'"+" where bno = " + "'"+tmpbno_change+"'"
+	if(tmpbprice_change):
+		sql2=" update book set bwriter = "+"'"+tmpbprice_change +"'"+" where bno = " + "'"+tmpbno_change+"'"
+	if(tmpbpress_change):
+		sql3=" update book set bpress = "+"'"+tmpbpress_change +"'"+" where bno = " + "'"+tmpbno_change+"'"
+	if(tmpbyear_change):
+		sql4=" update book set bnum = "+"'"+tmpbyear_change +"'"+" where bno = " + "'"+tmpbno_change+"'"
+	if(tmpbno_change1 and flag==0):
+		sql5=" update book set bno = "+"'"+tmpbno_change1+"'"+" where bno = " + "'"+tmpbno_change+"'"
+	sql_sum=sql1+sql2+sql3+sql4+sql5+sql
+
+
+	if(flag==0):
+		tkinter.Label(window,bg='WhiteSmoke').place(x=100,y=0,width=350,height=400,anchor='nw')
+		print('修改成功！')
+		print('已自动清空页面')
+		cursor.execute(sql_sum)
+		conn.commit()
+		show()
+
+
+def add1():
+	global L51,E51,Btn51
+	tkinter.Label(window,bg='WhiteSmoke').place(x=100,y=0,width=350,height=400,anchor='nw')
+	global bno_add
+	L3=Label(window,text='编号')
+	L3.place(x=150,y=90,width=50,anchor=NW)
+	
+	bno_add=StringVar()
+	E3=Entry(window, bd=1, textvariable=bno_add)
+	E3.place(x=210,y=90,width=80,anchor=NW)
+
+	Btn3=tkinter.Button(window,text='确定添加',command=no_add)
+	Btn3.place(x=300,y=85,width=50,anchor=NW)
+	
+	
+def no_add():
+	global tmpbno_add
+	tmpbno_add=bno_add.get().strip() 
+	sql=''
+	if len(tmpbno_add)==0:
+		sql=''
+		print('未输入编号！请重新输入或选择其他功能')
+	else:
+		sql="select * from book where bno = " + "'"+tmpbno_add+"'"
+		cursor.execute(sql)
+		list=cursor.fetchall()
+		if(list):
+			print('此书已存在！请重新输入或选择其他功能')
+		else:
+			global L41,L42,L43,L44,L45,E41,E42,E43,E44,E45,Btn41
+
+			global bname_add
+			bname_add=StringVar()
+			L42=Label(window,text='书名')
+			L42.place(x=150,y=180,width=50,anchor=NW)
+			E42=Entry(window, bd=1, textvariable=bname_add)
+			E42.place(x=210,y=180,width=80,anchor=NW)
+
+			global bprice_add
+			bprice_add=StringVar()
+			L43=Label(window,text='作者')
+			L43.place(x=150,y=230,width=50,anchor=NW)
+			E43=Entry(window, bd=1, textvariable=bprice_add)
+			E43.place(x=210,y=230,width=80,anchor=NW)
+
+			global bpress_add
+			bpress_add=StringVar()
+			L44=Label(window,text='出版社')
+			L44.place(x=150,y=280,width=50,anchor=NW)
+			E44=Entry(window, bd=1, textvariable=bpress_add)
+			E44.place(x=210,y=280,width=80,anchor=NW)
+
+			global byear_add
+			byear_add=StringVar()
+			L45=Label(window,text='数量')
+			L45.place(x=150,y=330,width=50,anchor=NW)
+			E45=Entry(window, bd=1, textvariable=byear_add)
+			E45.place(x=210,y=330,width=80,anchor=NW)
+
+
+			Btn41=tkinter.Button(window,text='确定',command=no_add_in)
+			Btn41.place(x=300,y=325,width=50,anchor=NW)
+			
+
+
+def no_add_in():
+	sql="insert into book(bno,bname,bwriter,bpress,bnum)values ("
+	sql1="'"+tmpbno_add+"'"+","
+	slq2=''
+	sql3=''
+	sql4=''
+	sql5=''
+	tmpbname_add=bname_add.get().strip()
+	tmpbprice_add=bprice_add.get().strip()
+	tmpbpress_add=bpress_add.get().strip()
+	tmpbyear_add=byear_add.get().strip()
+	if(tmpbname_add):
+		sql2="'"+tmpbname_add+"'"+","
+	else:
+		sql2="NULL"+","
+	if(tmpbprice_add):
+		sql3="'"+tmpbprice_add+"'"+","
+	else:
+		sql3="NULL"+","
+	if(tmpbpress_add):
+		sql4="'"+tmpbpress_add+"'"+","
+	else:
+		sql4="NULL"+","
+	if(tmpbyear_add):
+		sql5="'"+tmpbyear_add+"'"+")"
+	else:
+		sql5="NULL"+")"
+
+	sql_sum=sql+sql1+sql2+sql3+sql4+sql5
+	print('添加成功！')
+	tkinter.Label(window,bg='WhiteSmoke').place(x=100,y=0,width=350,height=400,anchor='nw')
+
+	print('已自动清空页面')
+	cursor.execute(sql_sum)
+	conn.commit()
+	show()
+	
+	
+
+def show():
+	global tree
+	columns=("编号","书名","作者","出版社","数量")
+	tree = ttk.Treeview(window,show='headings',columns=columns)
+	tree.column('编号', width=100)
+	tree.column('书名', width=100)
+	tree.column('作者', width=100)
+	tree.column('出版社', width=100)
+	tree.column('数量', width=100)
+	
+	tree.heading('编号', text='编号')
+	tree.heading('书名', text='书名')
+	tree.heading('作者', text='作者')
+	tree.heading('出版社', text='出版社')
+	tree.heading('数量', text='数量')
+
+	tree.place(x=450,y=0,height=450)
+	
+	sql_0="select * from book"
+	cursor.execute(sql_0)
+	list=cursor.fetchall()
+	list1=[]
+	for row in list:
+		if(row[1]!=None):
+			r1=row[1].encode('latin-1').decode('gbk')
+		else:
+			r1=row[1]
+		if(row[3]!=None):
+			r3=row[3].encode('latin-1').decode('gbk')
+		else:
+			r3=row[3]
+		r0=row[0]
+		r2=row[2]
+		r4=row[4]
+		list1.append({"编号":r0,"书名":r1,"作者":r2,"出版社":r3,"数量":r4})
+		
+	#先清空所有数据	
+	x=tree.get_children()
+	for item in x:
+		tree.delete(item)
+
+	#再添加更新后的数据'''
+	i=0
+	list2 = sorted(list1, key=operator.itemgetter("编号"))			
+	for v in list2:
+		tree.insert('',i, values = (v.get("编号"), v.get("书名"), v.get("作者"),v.get("出版社"),v.get("数量")))
+		i+=1
+	
+
+	
+
+	def treeviewClick1(event):#单击
+		for item in tree.selection():
+			item_text = tree.item(item, "values")
+			print(item_text)
+		'''x=tree.get_children()
+		for item in x:
+			tree.delete(item)
+		list2.reverse()
+	
+		i1=0
+		for v in list2:
+			tree.insert('',i1, values = (v.get("编号"), v.get("书名"), v.get("价格"),v.get("出版社"),v.get("出版年")))
+			i1+=1'''
+	tree.bind('<3>', treeviewClick1)
+
+
+	
+	
+	def tree_sort_column(tv, col, reverse):#Treeview、列名、排列方式
+		l = [(tv.set(k, col), k) for k in tv.get_children('')]
+		l.sort(reverse=reverse)#排序方式
+
+		for index, (val, k) in enumerate(l):#根据排序后索引移动
+			tv.move(k, '', index)
+		tv.heading(col, command=lambda: tree_sort_column(tv, col, not reverse))#重写标题，使之成为再点倒序的标题
+		
+	for col in columns:
+		tree.heading(col, text=col, command=lambda _col=col: tree_sort_column(tree, _col, False))
+
+
+
+
+def xuesheng():
+	tkinter.Label(window,bg='WhiteSmoke').place(x=0,y=0,width=4500,height=5000,anchor='nw')
+	global Lname1,Lpassword1,Ename1,Epassword1
+	Lname1=Label(window,text='账号:')
+	Lname1.place(x=150,y=180,width=60,height=30,anchor=NW)
+	varname1=tkinter.StringVar(window,value='')
+	Ename1=Entry(window, bd=1, textvariable=varname1)
+	Ename1.place(x=210,y=180,width=200,height=30,anchor=NW)
+	Lpassword1=Label(window,text='密码')
+	Lpassword1.place(x=150,y=250,width=60,height=30,anchor=NW)
+	varpassword1=tkinter.StringVar(window,value='')
+	Epassword1=Entry(window, show='*',bd=1, textvariable=varpassword1)
+	Epassword1.place(x=210,y=250,width=200,height=30,anchor=NW)
+
+	btn3=tkinter.Button(window,text='确定',font=0,command=stu)
+	btn3.place(x=460,y=170,width=100,height=50,anchor=NW)
+	
+	btn4=tkinter.Button(window,text='返回',font=0,command=fanhui)
+	btn4.place(x=460,y=230,width=100,height=50,anchor=NW)
+	
+def stu():
+	a=Ename1.get()
+	b=Epassword1.get()
+	if [a,b] in users:
+		print('用户'+a+'登录成功!')
+		global Btn01
+		tkinter.Label(window,bg='WhiteSmoke').place(x=0,y=0,width=4500,height=5000,anchor='nw')
+		btn01=tkinter.Button(window,text='查询',font=0,command=inquire)
+		btn01.place(x=20,y=45,width=80,height=50,anchor=NW)
+		
+		btn02=tkinter.Button(window,text='返回',font=0,command=fanhui)
+		btn02.place(x=20,y=365,width=80,height=50,anchor=NW)
+		tkinter.Label(window,bg='WhiteSmoke').place(x=100,y=0,width=350,height=400,anchor='nw')
+	
+		show()
+	else:
+		print('账号或密码错误！')
+		fanhui()
+
+def guanli():
+	tkinter.Label(window,bg='WhiteSmoke').place(x=0,y=0,width=4500,height=5000,anchor='nw')
+	global Lname2,Lpassword2,Ename2,Epassword2
+	Lname2=Label(window,text='账号:')
+	Lname2.place(x=150,y=180,width=60,height=30,anchor=NW)
+	varname2=tkinter.StringVar(window,value='')
+	Ename2=Entry(window, bd=1, textvariable=varname2)
+	Ename2.place(x=210,y=180,width=200,height=30,anchor=NW)
+	Lpassword2=Label(window,text='密码')
+	Lpassword2.place(x=150,y=250,width=60,height=30,anchor=NW)
+	varpassword2=tkinter.StringVar(window,value='')
+	Epassword2=Entry(window, show='*',bd=1, textvariable=varpassword2)
+	Epassword2.place(x=210,y=250,width=200,height=30,anchor=NW)
+
+	btn6=tkinter.Button(window,text='确定',font=0,command=manage)
+	btn6.place(x=460,y=170,width=100,height=50,anchor=NW)
+	
+	btn7=tkinter.Button(window,text='返回',font=0,command=fanhui)
+	btn7.place(x=460,y=230,width=100,height=50,anchor=NW)
+
+
+def manage():
+	c=Ename2.get()
+	d=Epassword2.get()
+	if c=='jiangchuan' and d=='123456':
+		global Btn001,Btn002,Btn003,Btn004
+		tkinter.Label(window,bg='WhiteSmoke').place(x=0,y=0,width=4500,height=5000,anchor='nw')
+		Btn001=tkinter.Button(window,text='查询',font=0,command=inquire)
+		Btn001.place(x=20,y=45,width=80,height=50,anchor=NW)
+
+		Btn002=tkinter.Button(window,text='删除',font=0,command=delete1)
+		Btn002.place(x=20,y=125,width=80,height=50,anchor=NW)
+
+		Btn003=tkinter.Button(window,text='修改',font=0,command=change1)
+		Btn003.place(x=20,y=205,width=80,height=50,anchor=NW)
+
+
+		Btn004=tkinter.Button(window,text='增加',font=0,command=add1)
+		Btn004.place(x=20,y=285,width=80,height=50,anchor=NW)
+		
+		Btn005=tkinter.Button(window,text='返回',font=0,command=fanhui)
+		Btn005.place(x=20,y=365,width=80,height=50,anchor=NW)
+		tkinter.Label(window,bg='WhiteSmoke').place(x=100,y=0,width=350,height=400,anchor='nw')
+		
+		show()
+	else:
+		print('账号或密码错误！')
+		fanhui()
+	
+
+def fanhui():
+	tkinter.Label(window,bg='WhiteSmoke').place(x=0,y=0,width=4500,height=5000,anchor='nw')
+	Btn_01=tkinter.Button(window,text='注册',font=0,command=zhuce)
+	Btn_01.place(x=20,y=45,width=100,height=50,anchor=NW)
+	
+	
+	Btn_02=tkinter.Button(window,text='管理员登陆',font=0,command=guanli)
+	Btn_02.place(x=20,y=145,width=100,height=50,anchor=NW)
+	
+	Btn_03=tkinter.Button(window,text='学生登陆',font=0,command=xuesheng)
+	Btn_03.place(x=20,y=245,width=100,height=50,anchor=NW)
+
+	
+def zhuce():
+	tkinter.Label(window,bg='WhiteSmoke').place(x=0,y=0,width=4500,height=5000,anchor='nw')
+	global Lname,Ename,Lpassword,Epassword,btn1,btn2,Ename,Epassword
+	Lname=Label(window,text='账号:')
+	Lname.place(x=150,y=180,width=60,height=30,anchor=NW)
+	varname=tkinter.StringVar(window,value='')
+	Ename=Entry(window, bd=1, textvariable=varname)
+	Ename.place(x=210,y=180,width=200,height=30,anchor=NW)
+	Lpassword=Label(window,text='密码')
+	Lpassword.place(x=150,y=250,width=60,height=30,anchor=NW)
+	varpassword=tkinter.StringVar(window,value='')
+	Epassword=Entry(window, show='*',bd=1, textvariable=varpassword)
+	Epassword.place(x=210,y=250,width=200,height=30,anchor=NW)
+
+	btn1=tkinter.Button(window,text='确定',font=0,command=jilu)
+	btn1.place(x=460,y=170,width=100,height=50,anchor=NW)
+	
+	btn2=tkinter.Button(window,text='返回',font=0,command=fanhui)
+	btn2.place(x=460,y=230,width=100,height=50,anchor=NW)
+
+def jilu():
+	name=Ename.get()
+	password=Epassword.get()
+	if(name and password):
+		users.append([name, password])
+	else:
+		print('输入错误！')
+	fanhui()
+
+if __name__ =='__main__':
+	users=[]
+	print('------')
+	conn=pymssql.connect(host='localhost',user='jiangchuan',password='123456',database='test1',charset='utf8')
+	print(conn)
+	print('连接成功！')
+
+	users = []
+	cursor=conn.cursor()
+	window=tkinter.Tk()
+	window.title('图书资料的查询、修改、增加、删除')
+	
+	winWidth = 1000
+	winHeight = 460
+	
+	# 获取屏幕分辨率
+	screenWidth = window.winfo_screenwidth()
+	screenHeight = window.winfo_screenheight()
+ 
+	x = int((screenWidth - winWidth) / 2)
+	y = int((screenHeight - winHeight) / 2)
+	window.geometry("%sx%s+%s+%s" % (winWidth, winHeight, x, y))
+
+	
+	Btn_1=tkinter.Button(window,text='注册',font=0,command=zhuce)
+	Btn_1.place(x=20,y=45,width=100,height=50,anchor=NW)
+	
+	
+	Btn_2=tkinter.Button(window,text='管理员登陆',font=0,command=guanli)
+	Btn_2.place(x=20,y=145,width=100,height=50,anchor=NW)
+	
+	Btn_3=tkinter.Button(window,text='学生登陆',font=0,command=xuesheng)
+	Btn_3.place(x=20,y=245,width=100,height=50,anchor=NW)
+
+	
+	window.mainloop()
